@@ -448,7 +448,7 @@ if select == "Prescriptive Analytics":
 
     with pres_col2:
 
-        with open('style.css') as f:
+        with open('repository/style.css') as f:
             st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
         prob_val = f"{prob_df[prob_df['Customer ID']==cust_id]['Probs'].values[0]}"
