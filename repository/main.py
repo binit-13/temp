@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np 
 import streamlit as st
@@ -11,8 +12,8 @@ import scipy
 import seaborn as sns
 
 from model import model1, model2
-
 from calc import get_dataframes
+
 prob_df, feat_df = get_dataframes()
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -110,7 +111,7 @@ if select == "Home | Descriptive ":
                 print(stayed_des)
             if button_joined:
                 stayed_des_join = pie_data[pie_data['Customer Status'] == 'Joined'].drop(columns=['Zip Code', 'Latitude', 'Longitude']).describe().transpose().round(2)
-                stayed_des_join = stayed_des_join(pd.to_numeric, errors='ignore')
+                stayed_des_join = stayed_des_join.apply(pd.to_numeric, errors='ignore')
                 stayed_des_join = round(stayed_des_join, 2)
                 st.write(stayed_des_join.style.background_gradient(cmap='Greens_r'))
 
@@ -521,3 +522,18 @@ if select == "Prescriptive Analytics":
 
 
                                                                         """, unsafe_allow_html=True)
+
+    st.markdown("\n\n\n\n")
+
+    if pr_contract == 'Month-to-Month' and float(prob_val) < 75.0:
+        st.write('Promote these Package to the USER ASAP')
+        tdata = [['Yearly Bundle Package', '50 GB/month|speed 5Mbps', 100, 100, 600, '-', 'Free', 'Unlimited'],
+                ['Yearly Roaming Package', '60 GB/month|speed 5Mbps', 100, 100, 700, 'National|International', 'Free',
+                 'Unlimited'],
+                ['5G Max Yearly Package', '70 GB/month|speed 5Mbps', 100, 100, 800, 'N/A', 'Free', 'Unlimited']]
+        st.write(pd.DataFrame(tdata,
+                              columns = ['Type','Internet','Phone Call','SMS', 'Price', 'Roaming','StreamingTV','Telco Super WIFI'], index=range(1, len(tdata)+1)))
+        st.write('<span style="font-size: smaller;">*Phone call and SMS are free for the first 100; thereafter, normal charges apply.</span>', unsafe_allow_html=True)
+        st.write(
+            '<span style="font-size: smaller;">**Internet speed will drop to 1Mbps after Usage limit is over</span>',
+            unsafe_allow_html=True)
